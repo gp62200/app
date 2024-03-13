@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Text, View, StyleSheet, Button, ToastAndroid } from "react-native";
 import { CameraView, Camera } from "expo-camera/next";
 import * as Location from "expo-location";
-
+import { useDispatch, useSelector } from "react-redux";
+import { punchStart,punchSuccess,punchFailure } from "../src/features/att/attSlice";
 export default function QrScannerScreen({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasLocationPermission, setHasLocationPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-
+  const error=useSelector((state)=>state.att.error);
+  const dispatch=useDispatch();
   // useEffect(() => {
   //   const getCameraPermissions = async () => {
   //     const { status } = await Camera.requestCameraPermissionsAsync();
@@ -27,12 +32,19 @@ export default function QrScannerScreen({navigation}) {
   //   // getLocationPermissions();
   // }, []);
   useEffect(() => {
+    getLocation()
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
     const getCameraPermissions = async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
     };
 
     getCameraPermissions();
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+    
   }, []);
   const requestLocationPermission = async () => {
     try {
@@ -53,7 +65,7 @@ export default function QrScannerScreen({navigation}) {
       } else {
         console.log('You cannot use Geolocation');
         return false;
-      }
+      } 
     } catch (err) {
       return false;
     }
@@ -87,20 +99,49 @@ export default function QrScannerScreen({navigation}) {
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
+      dispatch(punchStart());
+      console.log("hoe ")
+      try {
+        const apiUrl = "http://43.230.200.65:118/Service1.svc/AMA_Insert";
+        
+        const res=await axios.post(apiUrl,{
+          
+          Att_Latitude:location.coords.latitude,
+          Att_Longitude:location.coords.longitude,
+          Att_Current_time:currentTime.toLocaleTimeString(),
+          "In_Out_Type":"TRAVEL",
+        })
+        
+     console.log(res.data)
+
+    //  if(res.data.Status==="Success"){
+    //   dispatch(punchSuccess({coordinates:{location:{coords:{latitude,longitude}}},currentTime}))
+    
+    //  }
+ }
+  catch (error) {
+       console.log("err",error)
+     }
       
       navigation.navigate("Camera")
+ 
+      //for location
       // try {
-      //   const { status } = await Location.requestForegroundPermissionsAsync();
-      //   if (status === "granted") {
-      //     const location = await Location.getCurrentPositionAsync({});
-      //     sendLocationToAPI(location);
-      //     // setLocation(location);
-      //   } else {
-      //     console.log("Location permission denied");
+      //   let { status } = await Location.requestForegroundPermissionsAsync();
+        
+      //   if (status !== 'granted') {
+      //     setErrorMsg('Permission to access location was denied');
+      //     return;
       //   }
+      //   console.log("a")
+    
+      //   let location = await Location.getCurrentPositionAsync({});
+      //   setLocation(location);
       // } catch (error) {
-      //   console.error("Error getting location:", error);
+      //   console.error('Error getting location:', error);
+      //   setErrorMsg('Error getting location');
       // }
+
     } else {
       setScanned(true);
       // alert(`Invalid QR code: ${data}`);

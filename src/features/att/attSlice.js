@@ -8,9 +8,9 @@ const initialState={
 const attSlice=createSlice({
     name:"att",
     initialState,
-    reducer:{
+    reducers:{
         punchStart:(state)=>{
-            state.error=null
+            state.error=null;
 
         },
         punchSuccess:(state,action)=>{
@@ -29,3 +29,4 @@ const attSlice=createSlice({
 export const{punchStart,punchSuccess,punchFailure}=attSlice.actions;
 
 export default attSlice.reducer
+
