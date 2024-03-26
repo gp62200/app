@@ -129,10 +129,10 @@ const HomeScreen = ({navigation}) => {
           <TouchableOpacity style={styles.card} onPress={handleLogout}>
             <Text >Logout</Text>
           </TouchableOpacity>
-          <View>
+          {/* <View>
           <Text>Current Time:</Text>
       <Text>{currentTime.toLocaleTimeString()}</Text>
-          </View>
+          </View> */}
 {/*   <View>
       <View style={styles.buttonContainer}>
         <Button title="Get Location" onPress={getLocation} />

@@ -14,17 +14,18 @@
     "@react-navigation/native-stack": "^6.9.22",
     "@react-navigation/stack": "^6.3.25",
     "@reduxjs/toolkit": "^2.2.1",
-    "axios": "^1.6.7",
+    "axios": "^1.6.8",
     "deprecated-react-native-prop-types": "^5.0.0",
-    "expo": "~50.0.11",
+    "expo": "~50.0.13",
     "expo-barcode-scanner": "^12.9.3",
-    "expo-camera": "~14.0.6",
+    "expo-camera": "~14.1.1",
+    "expo-file-system": "^16.0.8",
+    "expo-image-manipulator": "~11.8.0",
     "expo-image-picker": "^14.7.1",
     "expo-location": "^16.5.5",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
-    "react-native": "0.73.4",
-    "react-native-camera": "^4.2.1",
+    "react-native": "0.73.5",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "~2.14.0",
     "react-native-modal": "^13.0.1",
@@ -32,7 +33,12 @@
     "react-native-screens": "~3.29.0",
     "react-redux": "^9.1.0",
     "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "expo-build-properties": "~0.11.1",
+    "expo-updates": "~0.24.12"
+  },
+  "expo-yarn-workspaces": {
+    "symlinks": ["expo-constants"]
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

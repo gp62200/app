@@ -31,11 +31,12 @@ export default function QrScannerScreen({navigation}) {
   //   getCameraPermissions();
   //   // getLocationPermissions();
   // }, []);
+  
   useEffect(() => {
-    getLocation()
-    const intervalId = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+    // getLocation()
+    // const intervalId = setInterval(() => {
+    //   setCurrentTime(new Date());
+    // }, 1000);
     const getCameraPermissions = async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
@@ -43,7 +44,7 @@ export default function QrScannerScreen({navigation}) {
 
     getCameraPermissions();
     // Clean up the interval on component unmount
-    return () => clearInterval(intervalId);
+    // return () => clearInterval(intervalId);
     
   }, []);
   const requestLocationPermission = async () => {
@@ -99,29 +100,30 @@ export default function QrScannerScreen({navigation}) {
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
-      dispatch(punchStart());
-      console.log("hoe ")
-      try {
-        const apiUrl = "http://43.230.200.65:118/Service1.svc/AMA_Insert";
+//       dispatch(punchStart());
+//       console.log("hoe ")
+//       try {
+//         const apiUrl = "http://43.230.200.65:118/Service1.svc/AMA_Insert";
         
-        const res=await axios.post(apiUrl,{
+//         const res=await axios.post(apiUrl,{
           
-          Att_Latitude:location.coords.latitude,
-          Att_Longitude:location.coords.longitude,
-          Att_Current_time:currentTime.toLocaleTimeString(),
-          "In_Out_Type":"TRAVEL",
-        })
+//           Att_Latitude:location.coords.latitude,
+//           Att_Longitude:location.coords.longitude,
+//           Att_Current_time:currentTime.toLocaleTimeString(),
+//           "In_Out_Type":"TRAVEL",
+          
+//         })
         
-     console.log(res.data)
+//      console.log(res.data)
 
-    //  if(res.data.Status==="Success"){
-    //   dispatch(punchSuccess({coordinates:{location:{coords:{latitude,longitude}}},currentTime}))
+//     //  if(res.data.Status==="Success"){
+//     //   dispatch(punchSuccess({coordinates:{location:{coords:{latitude,longitude}}},currentTime}))
     
-    //  }
- }
-  catch (error) {
-       console.log("err",error)
-     }
+//     //  }
+//  }
+//   catch (error) {
+//        console.log("err",error)
+//      }
       
       navigation.navigate("Camera")
  
