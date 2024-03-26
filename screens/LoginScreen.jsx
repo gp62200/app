@@ -18,6 +18,7 @@ import {
   ToastAndroid,
   ActivityIndicator
 } from "react-native";
+import * as Location from 'expo-location';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen({ navigation }) {
@@ -26,6 +27,10 @@ export default function LoginScreen({ navigation }) {
   const dispatch=useDispatch();
   const loading=useSelector((state)=>state.auth.loading);
   const error=useSelector((state)=>state.auth.error);
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+ 
 
   const handleLogin = () => {
     const apiUrl = "http://43.230.200.65:118/Service1.svc/UserLogin";

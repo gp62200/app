@@ -14,6 +14,7 @@ export default function StopWatchScreen () {
       interval = setInterval(() => {
         setElapsedTime((prevElapsedTime) => prevElapsedTime + 1);
       }, 1000);
+      handleStartStopwatch();  
     }
 
     return () => clearInterval(interval);

@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "app",
+    "name": "ama",
     "slug": "app",
     "version": "1.0.0",
+    
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,18 +19,38 @@
       "supportsTablet": true
     },
     "android": {
-      "permissions": ["LOCATION","CAMERA", "READ_EXTERNAL_STORAGE", "ACCESS_FINE_LOCATION",
-      "ACCESS_COARSE_LOCATION"],
-   
+      "usesCleartextTraffic": true,
+      
+      "permissions": [
+        "INTERNET",
+        "LOCATION",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
-     
-
+      },
+      "package": "relatedtoanysample.ama"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c1a81fd6-1cec-4773-b536-6cd9e0a40ed5"
+      }
+    },
+    "plugins": [
+      "expo-build-properties"
+    ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/c1a81fd6-1cec-4773-b536-6cd9e0a40ed5"
     }
   }
 }

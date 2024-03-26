@@ -13,19 +13,31 @@ import {
 import * as Location from 'expo-location';
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../src/features/auth/authSlice";
+import { punchFailure, punchStart } from "../src/features/att/attSlice";
 const { width } = Dimensions.get("window");
 const CARD_MARGIN = 16;
 const CARD_WIDTH = (width - CARD_MARGIN * 4) / 2;
 const HomeScreen = ({navigation}) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const[userId,setUserId]=useState(null)
+  const[latitude,setLatitude]=useState(null)
+  const[longitude,setLongitude]=useState(null)
+  const[currTime,setCurrTime]=useState(null)
   const dispatch=useDispatch();
-  const loading=useSelector((state)=>state.auth.loading);
-  const error=useSelector((state)=>state.auth.error);
+  // const loading=useSelector((state)=>state.auth.loading);
+  const error=useSelector((state)=>state.att.error);
 
   useEffect(() => {
-    requestLocationPermission();
-  });
+    getLocation()
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  },[]);
 
   const requestLocationPermission = async () => {
     try {
@@ -40,27 +52,28 @@ const HomeScreen = ({navigation}) => {
         },
       );
       console.log('granted', granted);
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      if (granted === 'granted') {
         console.log('You can use Geolocation');
-        getLocation();
+        return true;
       } else {
         console.log('You cannot use Geolocation');
+        return false;
       }
     } catch (err) {
-      console.error(err);
+      return false;
     }
   };
-
   const getLocation = async () => {
-    console.log("location")
+    requestLocationPermission();
     try {
-      let { status } = await requestLocationPermission();
-
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
         return;
       }
-
+      console.log("a")
+  
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     } catch (error) {
@@ -73,9 +86,30 @@ const HomeScreen = ({navigation}) => {
     // Add logic to send location
     console.log("Sending location:", location);
   };
-  const handleSubmit=()=>{
+  
+  const handleSubmit=async()=>{
     navigation.navigate("Code")
+//     dispatch(punchStart());
+//     console.log("hoe ")
+//     try {
+//       const apiUrl = "http://43.230.200.65:118/Service1.svc/AMA_Insert";
+      
+//       const res=await axios.post(apiUrl,{
+        
+//         Att_Latitude:location.coords.latitude,
+//         Att_Longitude:location.coords.longitude,
+//         Att_Current_time:currentTime.toLocaleTimeString(),
+//   })
+//     console.log(res.data)
+// }
+//  catch (error) {
+//       console.log("err",error)
+//     }
+    
+    
+    
   }
+
   const handleLogout = () => {
     dispatch(logout());
     console.log("log out")
@@ -95,9 +129,13 @@ const HomeScreen = ({navigation}) => {
           <TouchableOpacity style={styles.card} onPress={handleLogout}>
             <Text >Logout</Text>
           </TouchableOpacity>
-
+          {/* <View>
+          <Text>Current Time:</Text>
+      <Text>{currentTime.toLocaleTimeString()}</Text>
+          </View> */}
+{/*   <View>
       <View style={styles.buttonContainer}>
-        <Button title="Get Location" onPress={requestLocationPermission} />
+        <Button title="Get Location" onPress={getLocation} />
       </View>
 
       <Text>Latitude: {location ? location.coords.latitude : null}</Text>
@@ -107,7 +145,7 @@ const HomeScreen = ({navigation}) => {
 
       <View style={styles.buttonContainer}>
         <Button title="Send Location" onPress={handleSendLocation} />
-      </View>
+      </View> */}
     </View>
   );
 };
